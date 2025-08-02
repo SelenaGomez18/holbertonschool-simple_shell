@@ -10,7 +10,7 @@
 extern char **environ;
 
 char *read_line(void);
-void execute_cmd(char *cmd);
+int execute_command(char *command, char **args, char **env);
 void display_prompt(void);
 char *trim_spaces(char *str);
 

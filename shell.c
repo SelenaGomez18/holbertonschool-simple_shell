@@ -6,6 +6,7 @@
  */
 int main(void)
 {
+    char *args[] = {"ls", "-l", NULL};
 	char *line = NULL, *clean_line;
 
 	while (1)
@@ -23,7 +24,8 @@ int main(void)
 		clean_line = trim_spaces(line);
 
 		if (clean_line[0] != '\0')
-			execute_cmd(clean_line);
+			execute_command(args[0], args, environ);
+;
 
 		free(line);
 	}

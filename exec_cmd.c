@@ -1,31 +1,26 @@
 #include "main.h"
 
-void execute_cmd(char *cmd)
+int execute_command(char *command, char **args, char **env)
 {
-	pid_t pid;
-	int status;
-
-	pid = fork();
-
-	if (pid == -1)
+	if (strchr(command, '/'))
 	{
-		perror("fork");
-		return;
+		execve(command, args, env);
+		perror(command);
+		return -1;
 	}
-
-	if (pid == 0)
-	{
-		char *argv[2];
-		argv[0] = cmd;
-		argv[1] = NULL;
-
-		if (execve(cmd, argv, environ) == -1)
-		{
-			perror("./shell");
-			exit(EXIT_FAILURE);
-		}
-	}
-
 	else
-		wait(&status);
+	{
+		char *path = getenv("PATH");
+		char *token = strtok(path, ":");
+		char full_path[1024];
+
+		while (token != NULL)
+		{
+			snprintf(full_path, sizeof(full_path), "%s/%s", token, command);
+			execve(full_path, args, env);
+			token = strtok(NULL, ":");
+		}
+		perror(command);
+		return -1;
+	}
 }
