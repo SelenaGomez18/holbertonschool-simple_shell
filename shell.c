@@ -1,12 +1,8 @@
 #include "main.h"
 
-/**
- * main - Loop principal del shell
- * Return: 0 al salir
- */
 int main(void)
 {
-    char **args;
+	char **args;
 	char *line = NULL, *clean_line;
 
 	while (1)
@@ -29,7 +25,7 @@ int main(void)
 			if (args)
 			{
 				execute_command(args[0], args, environ);
-				free (args);
+				free_args(args);
 			}
 		}
 
