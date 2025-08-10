@@ -20,8 +20,7 @@ int execute_command(char *command, char **args, char **env, char *shell_name, in
 
 	if (!cmd_path)
 	{
-		fprintf(stderr, "%s: %d: %s: not found\n",
-		shell_name, count, command);
+		fprintf(stderr, "%s: %d: %s: not found\n", shell_name, count, command);
 		*last_status = 127;
 		return (-1);
 	}
@@ -31,6 +30,7 @@ int execute_command(char *command, char **args, char **env, char *shell_name, in
 	{
 		perror("fork");
 		free(cmd_path);
+		*last_status = 1;
 		return (-1);
 	}
 
@@ -40,8 +40,7 @@ int execute_command(char *command, char **args, char **env, char *shell_name, in
 		{
 			if (errno == ENOENT)
 			{
-				fprintf(stderr, "%s: %d: %s: not found\n",
-					shell_name, count, command);
+				fprintf(stderr, "%s: %d: %s: not found\n", shell_name, count, command);
 				free(cmd_path);
 				exit(127);
 			}

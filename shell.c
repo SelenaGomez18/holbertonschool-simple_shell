@@ -24,7 +24,11 @@ int main(int argc, char **argv)
 		}
 
 		clean_line = trim_spaces(line);
-
+		if (clean_line[0] == '#' || (clean_line[0] == '/' && clean_line[1] == '#'))
+		{
+    		free(line);
+    		continue;
+		}
 		if (clean_line[0] != '\0')
 		{
 			args = split_line(clean_line);
