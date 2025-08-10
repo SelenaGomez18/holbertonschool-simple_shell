@@ -6,6 +6,7 @@ int main(int argc, char **argv)
 	char *line = NULL, *clean_line;
 	int count = 0;
 	int last_status = 0;
+	int ret;
 
 	(void)argc;
 
@@ -38,8 +39,14 @@ int main(int argc, char **argv)
 				}
 
 				count++;
-				execute_command(args[0], args, environ, argv[0], count, &last_status);
+				ret = execute_command(args[0], args, environ, argv[0], count, &last_status);
 				free_args(args);
+
+				if (ret == -1)
+				{
+					if (!isatty(STDIN_FILENO))
+						exit(last_status);
+				}
 			}
 		}
 

@@ -20,7 +20,7 @@ int execute_command(char *command, char **args, char **env, char *shell_name, in
 
 	if (!cmd_path)
 	{
-		dprintf(STDERR_FILENO, "%s: %d: %s: not found\n",
+		fprintf(stderr, "%s: %d: %s: not found\n",
 		shell_name, count, command);
 		*last_status = 127;
 		return (-1);
@@ -40,7 +40,7 @@ int execute_command(char *command, char **args, char **env, char *shell_name, in
 		{
 			if (errno == ENOENT)
 			{
-				dprintf(STDERR_FILENO, "%s: %d: %s: not found\n",
+				fprintf(stderr, "%s: %d: %s: not found\n",
 					shell_name, count, command);
 				free(cmd_path);
 				exit(127);
