@@ -8,6 +8,8 @@
 #include <sys/types.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
+
 
 extern int last_status;
 extern char **environ;
