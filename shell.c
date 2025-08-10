@@ -12,8 +12,8 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		if(isatty(STDIN_FILENO))
-		display_prompt();
+		if (isatty(STDIN_FILENO))
+			display_prompt();
 		line = read_line();
 
 		if (line == NULL)
@@ -64,8 +64,9 @@ int main(int argc, char **argv)
 
 		free(line);
 	}
-	if (!isatty(STDIN_FILENO))
-    	write(STDOUT_FILENO, "OK\n", 3);
+
+	if (isatty(STDIN_FILENO))
+		write(STDOUT_FILENO, "OK", 3);
 
 	return (0);
 }
