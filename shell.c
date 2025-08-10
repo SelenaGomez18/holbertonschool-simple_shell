@@ -66,7 +66,7 @@ int main(int argc, char **argv)
 	}
 
 	if (isatty(STDIN_FILENO))
-		write(STDOUT_FILENO, "OK", 3);
+		write(STDOUT_FILENO, "OK\n", 3);
 
 	return (0);
 }
