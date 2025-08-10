@@ -3,21 +3,22 @@
 char *find_full_path(char *command)
 {
 	char *path_env = NULL, *path_copy = NULL, *token = NULL, *full_path = NULL;
-	int i, len;
+	int i = 0, len;
 
 	if (access(command, X_OK) == 0)
 		return (strdup(command));
 
-	for (i = 0; environ[i]; i++)
+	while (environ[i])
 	{
 		if (strncmp(environ[i], "PATH=", 5) == 0)
 		{
 			path_env = environ[i] + 5;
 			break;
 		}
+		i++;
 	}
 
-	if (!path_env)
+	if (!path_env || path_env[0] == '\0')
 		return (NULL);
 
 	path_copy = strdup(path_env);
@@ -48,3 +49,4 @@ char *find_full_path(char *command)
 	free(path_copy);
 	return (NULL);
 }
+

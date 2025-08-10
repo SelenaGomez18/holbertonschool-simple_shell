@@ -64,6 +64,8 @@ int main(int argc, char **argv)
 
 		free(line);
 	}
+	if (!isatty(STDIN_FILENO))
+    	write(STDOUT_FILENO, "OK\n", 3);
 
 	return (0);
 }
