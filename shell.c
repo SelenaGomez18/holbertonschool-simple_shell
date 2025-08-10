@@ -48,7 +48,6 @@ int main(int argc, char **argv)
 			{
 				free_args(args);
 				free(line);
-				write(STDOUT_FILENO, "OK\n", 3);
 				exit(last_status);
 			}
 
@@ -65,8 +64,6 @@ int main(int argc, char **argv)
 
 		free(line);
 	}
-
-	write(STDOUT_FILENO, "OK\n", 3);
 
 	return (0);
 }
