@@ -10,15 +10,12 @@
 #include <errno.h>
 #include <signal.h>
 
-
-extern int last_status;
 extern char **environ;
 
 char *read_line(void);
 int execute_command(char *command, char **args, char **env, char *shell_name, int count, int *last_status);
 void display_prompt(void);
 char *trim_spaces(char *str);
-void tokenize_line(char *line, char **args);
 char **split_line(char *line);
 char *find_full_path(char *command);
 void free_args(char **args);
