@@ -1,6 +1,16 @@
 #include "main.h"
 
-int execute_command(char *command, char **args, char **env)
+/**
+ * execute_command - Executes a command with arguments and environment.
+ * @program_name: Name of the shell executable (argv[0]).
+ * @count: Command counter.
+ * @command: The command to execute.
+ * @args: Arguments for the command.
+ * @env: Environment variables.
+ *
+ * Return: 0 on success, -1 on failure.
+ */
+int execute_command(char *command, char **args, char **env, char *shell_name, int count, int *last_status)
 {
 	pid_t pid;
 	int status;
@@ -10,8 +20,9 @@ int execute_command(char *command, char **args, char **env)
 
 	if (!cmd_path)
 	{
-		write(STDERR_FILENO, command, strlen(command));
-		write(STDERR_FILENO, ": command not found\n", 21);
+		dprintf(STDERR_FILENO, "%s: %d: %s: not found\n",
+		shell_name, count, command);
+		*last_status = 127;
 		return (-1);
 	}
 
@@ -27,6 +38,13 @@ int execute_command(char *command, char **args, char **env)
 	{
 		if (execve(cmd_path, args, env) == -1)
 		{
+			if (errno == ENOENT)
+			{
+				dprintf(STDERR_FILENO, "%s: %d: %s: not found\n",
+					shell_name, count, command);
+				free(cmd_path);
+				exit(127);
+			}
 			perror(command);
 			free(cmd_path);
 			exit(EXIT_FAILURE);
@@ -35,6 +53,10 @@ int execute_command(char *command, char **args, char **env)
 	else
 	{
 		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			*last_status = WEXITSTATUS(status);
+		else
+			*last_status = 1;
 	}
 
 	free(cmd_path);

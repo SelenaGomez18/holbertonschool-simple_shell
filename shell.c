@@ -1,9 +1,13 @@
 #include "main.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
 	char **args;
 	char *line = NULL, *clean_line;
+	int count = 0;
+	int last_status = 0;
+
+	(void)argc;
 
 	while (1)
 	{
@@ -24,7 +28,17 @@ int main(void)
 			args = split_line(clean_line);
 			if (args)
 			{
-				execute_command(args[0], args, environ);
+				if (strcmp(args[0], "echo") == 0 && args[1] && strcmp(args[1], "$?") == 0)
+				{
+					char buffer[12];
+					sprintf(buffer, "%d\n", last_status);
+					write(STDOUT_FILENO, buffer, strlen(buffer));
+					free_args(args);
+					continue;
+				}
+
+				count++;
+				execute_command(args[0], args, environ, argv[0], count, &last_status);
 				free_args(args);
 			}
 		}
