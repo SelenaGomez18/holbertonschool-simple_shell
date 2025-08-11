@@ -1,5 +1,4 @@
 #include "main.h"
-#include <ctype.h>
 
 int main(int argc, char **argv)
 {
@@ -71,7 +70,7 @@ int main(int argc, char **argv)
 			if (strcmp(args[0], "env") == 0)
 			{
 				builtin_env();
-				fre_args(args);
+				free_args(args);
 				free(line);
 				continue;
 			}
