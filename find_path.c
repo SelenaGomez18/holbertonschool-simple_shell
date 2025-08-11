@@ -5,9 +5,15 @@ char *find_full_path(char *command)
 	char *path_env = NULL, *path_copy = NULL, *token = NULL, *full_path = NULL;
 	int i = 0, len;
 
-	if (access(command, X_OK) == 0)
-		return (strdup(command));
+	if (strchr(command, '/'))
+	{
+		if (access(command, X_OK) == 0)
+			return (strdup(command));
+		else
+			return (NULL);
 
+	}
+	
 	while (environ[i])
 	{
 		if (strncmp(environ[i], "PATH=", 5) == 0)

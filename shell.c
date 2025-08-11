@@ -1,4 +1,5 @@
 #include "main.h"
+#include <ctype.h>
 
 int main(int argc, char **argv)
 {
@@ -14,6 +15,7 @@ int main(int argc, char **argv)
 	{
 		if (isatty(STDIN_FILENO))
 			display_prompt();
+
 		line = read_line();
 
 		if (line == NULL)
@@ -24,11 +26,33 @@ int main(int argc, char **argv)
 		}
 
 		clean_line = trim_spaces(line);
-		if (clean_line[0] == '#' || (clean_line[0] == '/' && clean_line[1] == '#'))
+
+		if (clean_line[0] == '#')
 		{
-    		free(line);
-    		continue;
+			free(line);
+			continue;
 		}
+
+		if (strncmp(clean_line, "export", 6) == 0 &&
+			(clean_line[6] == ' ' || clean_line[6] == '\t' || clean_line[6] == '\0'))
+		{
+			free(line);
+			continue;
+		}
+
+		if (strchr(clean_line, '=') != NULL &&
+			(isalnum((unsigned char)clean_line[0]) || clean_line[0] == '_'))
+		{
+			char *name = strtok(clean_line, "=");
+			char *value = strtok(NULL, "");
+			if (name && value)
+				setenv(name, value, 1);
+			else if (name)
+				setenv(name, "", 1);
+			free(line);
+			continue;
+		}
+
 		if (clean_line[0] != '\0')
 		{
 			args = split_line(clean_line);
@@ -47,7 +71,7 @@ int main(int argc, char **argv)
 				free(line);
 				continue;
 			}
-			
+
 			if (strcmp(args[0], "exit") == 0)
 			{
 				free_args(args);
@@ -62,15 +86,18 @@ int main(int argc, char **argv)
 			if (ret == -1)
 			{
 				if (!isatty(STDIN_FILENO))
+				{
+					free(line);
 					exit(last_status);
+				}
+				
 			}
 		}
-
-		free(line);
 	}
 
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, "OK\n", 3);
 
-	return (0);
+	return (last_status);
 }
+
