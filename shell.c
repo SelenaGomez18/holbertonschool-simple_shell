@@ -28,17 +28,11 @@ int main(int argc, char **argv)
 		clean_line = trim_spaces(line);
 
 		if (clean_line[0] == '#')
-		{
-			free(line);
-			continue;
-		}
+			goto end_iteration;
 
 		if (strncmp(clean_line, "export", 6) == 0 &&
 			(clean_line[6] == ' ' || clean_line[6] == '\t' || clean_line[6] == '\0'))
-		{
-			free(line);
-			continue;
-		}
+			goto end_iteration;
 
 		if (strchr(clean_line, '=') != NULL &&
 			(isalnum((unsigned char)clean_line[0]) || clean_line[0] == '_'))
@@ -49,18 +43,14 @@ int main(int argc, char **argv)
 				setenv(name, value, 1);
 			else if (name)
 				setenv(name, "", 1);
-			free(line);
-			continue;
+			goto end_iteration;
 		}
 
 		if (clean_line[0] != '\0')
 		{
 			args = split_line(clean_line);
 			if (!args)
-			{
-				free(line);
-				continue;
-			}
+				goto end_iteration;
 
 			if (strcmp(args[0], "echo") == 0 && args[1] && strcmp(args[1], "$?") == 0)
 			{
@@ -68,8 +58,7 @@ int main(int argc, char **argv)
 				sprintf(buffer, "%d\n", last_status);
 				write(STDOUT_FILENO, buffer, strlen(buffer));
 				free_args(args);
-				free(line);
-				continue;
+				goto end_iteration;
 			}
 
 			if (strcmp(args[0], "exit") == 0)
@@ -83,16 +72,16 @@ int main(int argc, char **argv)
 			ret = execute_command(args[0], args, environ, argv[0], count, &last_status);
 			free_args(args);
 
-			if (ret == -1)
+			if (ret == -1 && !isatty(STDIN_FILENO))
 			{
-				if (!isatty(STDIN_FILENO))
-				{
-					free(line);
-					exit(last_status);
-				}
-				
+				free(line);
+				exit(last_status);
 			}
 		}
+
+		end_iteration:
+		free(line);
+		line = NULL; 
 	}
 
 	if (isatty(STDIN_FILENO))
@@ -100,4 +89,3 @@ int main(int argc, char **argv)
 
 	return (last_status);
 }
-
