@@ -9,6 +9,7 @@
 #include <string.h>
 #include <errno.h>
 #include <signal.h>
+#include <ctype.h>
 
 extern char **environ;
 
@@ -19,5 +20,6 @@ char *trim_spaces(char *str);
 char **split_line(char *line);
 char *find_full_path(char *command);
 void free_args(char **args);
+int builtin_env(void);
 
 #endif /*MAIN_H*/

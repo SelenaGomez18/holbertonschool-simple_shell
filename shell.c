@@ -68,6 +68,14 @@ int main(int argc, char **argv)
 				exit(last_status);
 			}
 
+			if (strcmp(args[0], "env") == 0)
+			{
+				builtin_env();
+				fre_args(args);
+				free(line);
+				continue;
+			}
+
 			count++;
 			ret = execute_command(args[0], args, environ, argv[0], count, &last_status);
 			free_args(args);
