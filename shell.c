@@ -74,6 +74,72 @@ int main(int argc, char **argv)
 				free(line);
 				continue;
 			}
+			
+						/* Built-in: cd */
+			/* Manejo del comando "cd" */
+			if (strcmp(args[0], "cd") == 0) /* Verifica si el primer argumento es "cd" */
+			{
+				char old_pwd[PATH_MAX];  /* Guarda el directorio actual antes de cambiar */
+				char new_pwd[PATH_MAX];  /* Guardará el nuevo directorio después de cambiar */
+
+				/* Obtiene el directorio actual y lo guarda en old_pwd */
+				if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
+				{
+					perror("getcwd");
+					free_args(args); /* Libera la memoria de los argumentos */
+					free(line);      /* Libera la línea leída */
+					last_status = 1; /* Marca error */
+					continue;        /* Salta al siguiente ciclo */
+				}
+
+				/* Si el usuario escribió solo "cd", cambiar al HOME */
+				if (args[1] == NULL)
+				{
+					char *home = getenv("HOME"); /* Obtiene la variable HOME */
+					if (home == NULL)
+						home = "/"; /* Si no existe HOME, ir al raíz */
+
+					if (chdir(home) != 0) /* Cambia al directorio HOME */
+					{
+						perror("cd");
+						free_args(args);
+						free(line);
+						last_status = 1;
+						continue;
+					}
+				}
+				else
+				{
+					/* Cambia al directorio especificado por el usuario */
+					if (chdir(args[1]) != 0)
+					{
+						perror("cd");
+						free_args(args);
+						free(line);
+						last_status = 1;
+						continue;
+					}
+				}
+
+				/* Obtiene el nuevo directorio después del cambio */
+				if (getcwd(new_pwd, sizeof(new_pwd)) == NULL)
+				{
+					perror("getcwd");
+					free_args(args);
+					free(line);
+					last_status = 1;
+					continue;
+				}
+
+				/* Actualiza las variables de entorno PWD y OLDPWD */
+				setenv("OLDPWD", old_pwd, 1);
+				setenv("PWD", new_pwd, 1);
+
+				free_args(args); /* Libera memoria antes de continuar */
+				free(line);
+				last_status = 0; /* Éxito */
+				continue; /* Salta a la siguiente iteración del bucle principal */
+			}
 
 			count++;
 			ret = execute_command(args[0], args, environ, argv[0], count, &last_status);

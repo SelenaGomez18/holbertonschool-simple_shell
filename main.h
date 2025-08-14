@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <signal.h>
 #include <ctype.h>
+#include <limits.h>
 
 extern char **environ;
 
