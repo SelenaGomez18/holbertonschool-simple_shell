@@ -86,7 +86,7 @@ Exit with status 98:
 #cisfun$ exit 98
 .in -4
 .SH AUTHOR
-Developed by Selena Gomez Rueda and collaborator(s) for Holberton School.
+Developed by Alexander Zuleta and Selena Gómez for Holberton School.
 .SH SEE ALSO
 .BR sh (1),
 .BR bash (1),

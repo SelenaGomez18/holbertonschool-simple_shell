@@ -1,3 +1,7 @@
 .vscode/
 hbtn_ls
 hsh
+ls_empty_path.bash
+out.txt
+expected.txt
+simple_checker.sh
