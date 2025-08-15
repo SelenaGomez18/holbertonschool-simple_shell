@@ -46,6 +46,13 @@ Exit the shell:
 .nf
 exit
 .fi
+.TP
+Change directory to /tmp and show current directory:
+.nf
+cd /tmp
+pwd
+.fi
+
 
 .SH BUGS
 Pipes, redirections, and custom environment variable assignments are not supported.
