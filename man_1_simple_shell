@@ -1,95 +1,61 @@
-.TH SIMPLE_SHELL 1 "August 2025" "Version 1.0" "User Commands"
+.TH hsh 1 "August 2025" "Version 1.0" "User Commands"
 .SH NAME
-simple_shell \- a simple command-line interpreter written in C
+hsh \- Basic interactive shell to execute commands.
 .SH SYNOPSIS
-.B simple_shell
-.RI [command\ ...]
-.br
-Runs in interactive or non-interactive mode.
+.B hsh
 .SH DESCRIPTION
-The
-.B simple_shell
-is a minimalist UNIX-like command-line interpreter developed as part of a C programming project.
-It supports executing basic system commands using system calls such as
-.B fork(2),
-.B execve(2),
-and
-.B wait(2).
+\fBsh\fR is a basic shell that allows you to execute commands interactively or through input from a script.  
+It supports running external programs, the built-in command \fBenv\fR to display environment variables, and the built-in command \fBexit\fR to exit the shell.
 
-Features:
-.IP \[bu]
-Displays a prompt (\fB#cisfun$\fP) when running in interactive mode.
-.IP \[bu]
-Reads user input, tokenizes arguments, and executes commands.
-.IP \[bu]
-Supports absolute and relative paths, as well as PATH search.
-.IP \[bu]
-Implements the built-in commands:
-\fBenv\fP and \fBexit\fP.
-.IP \[bu]
-Terminates when receiving the
-.B exit
-command or when reaching end-of-file (EOF, Ctrl+D).
 .SH OPTIONS
-No special options are supported. Any argument passed is interpreted as a command to execute.
-.SH BUILTINS
+This shell does not take any arguments or options at startup.
+
+.SH BUILT-IN COMMANDS
 .TP
-.B env
-Displays the current environment variables.
-Example:
-.in +4
-#cisfun$ env
-.in -4
+\fBenv\fR
+Displays all current environment variables.
 .TP
-.B exit [status]
-Exits the shell with the given status code (or 0 if none is provided).
-Example:
-.in +4
-#cisfun$ exit 2
-.in -4
-.SH MODES OF OPERATION
+\fBexit\fR
+Exits the shell.
 .TP
-Interactive mode:
-.in +4
-simple_shell
-.br
-Displays a prompt, waits for user commands, and executes them until receiving \fBexit\fP or EOF.
-.in -4
+\fBcd [directory]\fR
+Changes the current working directory to the specified path.  
+If no directory is provided, it changes to the HOME directory.
 .TP
-Non-interactive mode:
-.in +4
-echo "ls -l" | simple_shell
-.br
-Reads commands from standard input, executes them, then exits.
-.in -4
+\fBpwd\fR
+Prints the current working directory.
+
 .SH EXAMPLES
 .TP
-Start the shell:
-.in +4
-$ ./hsh
-.br
-#cisfun$ ls -l /tmp
-.in -4
+Run a simple command:
+.nf
+ls
+.fi
 .TP
-Run in non-interactive mode:
-.in +4
-$ echo "/bin/ls" | ./hsh
-.in -4
+Run a command with arguments:
+.nf
+ls -l /home
+.fi
 .TP
-Show environment variables:
-.in +4
-#cisfun$ env
-.in -4
+Display environment variables:
+.nf
+env
+.fi
 .TP
-Exit with status 98:
-.in +4
-#cisfun$ exit 98
-.in -4
-.SH AUTHOR
-Developed by Selena Gomez Rueda and collaborator(s) for Holberton School.
-.SH SEE ALSO
-.BR sh (1),
-.BR bash (1),
-.BR execve (2),
-.BR fork (2),
-.BR wait (2)
+Exit the shell:
+.nf
+exit
+.fi
+.TP
+Change directory to /tmp and show current directory:
+.nf
+cd /tmp
+pwd
+.fi
+
+
+.SH BUGS
+Pipes, redirections, and custom environment variable assignments are not supported.
+
+.SH AUTHORS
+Selena Gomez Rueda amd Alexander Zuleta for Holberton school

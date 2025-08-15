@@ -1,0 +1,95 @@
+.TH SIMPLE_SHELL 1 "August 2025" "Version 1.0" "User Commands"
+.SH NAME
+simple_shell \- a simple command-line interpreter written in C
+.SH SYNOPSIS
+.B simple_shell
+.RI [command\ ...]
+.br
+Runs in interactive or non-interactive mode.
+.SH DESCRIPTION
+The
+.B simple_shell
+is a minimalist UNIX-like command-line interpreter developed as part of a C programming project.
+It supports executing basic system commands using system calls such as
+.B fork(2),
+.B execve(2),
+and
+.B wait(2).
+
+Features:
+.IP \[bu]
+Displays a prompt (\fB#cisfun$\fP) when running in interactive mode.
+.IP \[bu]
+Reads user input, tokenizes arguments, and executes commands.
+.IP \[bu]
+Supports absolute and relative paths, as well as PATH search.
+.IP \[bu]
+Implements the built-in commands:
+\fBenv\fP and \fBexit\fP.
+.IP \[bu]
+Terminates when receiving the
+.B exit
+command or when reaching end-of-file (EOF, Ctrl+D).
+.SH OPTIONS
+No special options are supported. Any argument passed is interpreted as a command to execute.
+.SH BUILTINS
+.TP
+.B env
+Displays the current environment variables.
+Example:
+.in +4
+#cisfun$ env
+.in -4
+.TP
+.B exit [status]
+Exits the shell with the given status code (or 0 if none is provided).
+Example:
+.in +4
+#cisfun$ exit 2
+.in -4
+.SH MODES OF OPERATION
+.TP
+Interactive mode:
+.in +4
+simple_shell
+.br
+Displays a prompt, waits for user commands, and executes them until receiving \fBexit\fP or EOF.
+.in -4
+.TP
+Non-interactive mode:
+.in +4
+echo "ls -l" | simple_shell
+.br
+Reads commands from standard input, executes them, then exits.
+.in -4
+.SH EXAMPLES
+.TP
+Start the shell:
+.in +4
+$ ./hsh
+.br
+#cisfun$ ls -l /tmp
+.in -4
+.TP
+Run in non-interactive mode:
+.in +4
+$ echo "/bin/ls" | ./hsh
+.in -4
+.TP
+Show environment variables:
+.in +4
+#cisfun$ env
+.in -4
+.TP
+Exit with status 98:
+.in +4
+#cisfun$ exit 98
+.in -4
+.SH AUTHOR
+Developed by Selena Gomez Rueda and collaborator(s) for Holberton School.
+.SH SEE ALSO
+.BR sh (1),
+.BR bash (1),
+.BR execve (2),
+.BR fork (2),
+.BR wait (2)
