@@ -17,6 +17,13 @@ Displays all current environment variables.
 .TP
 \fBexit\fR
 Exits the shell.
+.TP
+\fBcd [directory]\fR
+Changes the current working directory to the specified path.  
+If no directory is provided, it changes to the HOME directory.
+.TP
+\fBpwd\fR
+Prints the current working directory.
 
 .SH EXAMPLES
 .TP
