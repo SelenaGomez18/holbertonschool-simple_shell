@@ -1,83 +1,113 @@
+#include "shell.h"
+
 /**
- * cd_to_home - Change directory to HOME
- * @last_status: Pointer to last command status
+ * print_line - write a string followed by '\n' using write
+ * @s: string to print (must not be NULL)
  *
- * Return: 0 on success, 1 on failure
+ * Return: void
  */
-int cd_to_home(int *last_status)
+static void print_line(const char *s)
 {
-	char *home = getenv("HOME");
+	size_t len = 0;
 
-	if (!home)
-		home = "/";
-
-	if (chdir(home) != 0)
-	{
-		perror("cd");
-		*last_status = 1;
-		return (1);
-	}
-
-	*last_status = 0;
-	return (0);
+	if (s == NULL)
+		return;
+	while (s[len])
+		len++;
+	write(STDOUT_FILENO, s, len);
+	write(STDOUT_FILENO, "\n", 1);
 }
 
 /**
- * cd_to_path - Change directory to specified path
- * @path: Directory path
- * @last_status: Pointer to last command status
+ * strip_cr - remove trailing CR ('\r') if present
+ * @s: modifiable string
  *
- * Return: 0 on success, 1 on failure
+ * Return: void
  */
-int cd_to_path(char *path, int *last_status)
+static void strip_cr(char *s)
 {
-	if (chdir(path) != 0)
-	{
-		perror("cd");
-		*last_status = 1;
-		return (1);
-	}
+	size_t len;
 
-	*last_status = 0;
-	return (0);
+	if (s == NULL)
+		return;
+	len = strlen(s);
+	if (len > 0 && s[len - 1] == '\r')
+		s[len - 1] = '\0';
 }
 
 /**
- * handle_cd_command - Handles the "cd" built-in command
- * @args: Command arguments
- * @last_status: Pointer to last command status
- * @line: Original input line
+ * builtin_env - print the current environment, one entry per line
+ * @args: not used
  *
- * Return: 1 if cd was executed, 0 otherwise
+ * Return: 0 on success
  */
-int handle_cd_command(char **args, int *last_status, char *line)
+int builtin_env(char **args)
 {
-	char old_pwd[PATH_MAX], new_pwd[PATH_MAX];
+	char **env;
 
-	if (strcmp(args[0], "cd") != 0)
+	(void)args;
+	env = environ;
+	if (env == NULL)
 		return (0);
 
-	if (getcwd(old_pwd, sizeof(old_pwd)) == NULL)
+	while (*env)
 	{
-		perror("getcwd");
-		*last_status = 1;
+		print_line(*env);
+		env++;
+	}
+
+	return (0);
+}
+
+/**
+ * builtin_exit - request shell termination
+ * @args: not used
+ *
+ * Instead of exiting directly, return -1 to indicate to the caller
+ * that the shell should terminate cleanly.
+ *
+ * Return: -1 to indicate exit requested
+ */
+int builtin_exit(char **args)
+{
+	(void)args;
+	return (-1);
+}
+
+/**
+ * is_builtin - check for and execute builtin commands
+ * @args: argument vector (argv)
+ * @prog_name: program name (argv[0]) for error messages (unused)
+ * @line_number: pointer to the current line number (unused)
+ *
+ * Return: 1 if a builtin was executed (normal),
+ *         -1 if builtin requested exit,
+ *         0 if not a builtin
+ */
+int is_builtin(char **args, char *prog_name, unsigned int *line_number)
+{
+	int ret;
+
+	(void)prog_name;
+	(void)line_number;
+
+	if (args == NULL || args[0] == NULL)
+		return (0);
+
+	strip_cr(args[0]);
+
+	if (strcmp(args[0], "exit") == 0)
+	{
+		ret = builtin_exit(args);
+		if (ret == -1)
+			return (-1);
+		return (1);
+	}
+	if (strcmp(args[0], "env") == 0)
+	{
+		builtin_env(args);
 		return (1);
 	}
 
-	if (!args[1])
-		cd_to_home(last_status);
-	else
-		cd_to_path(args[1], last_status);
-
-	if (getcwd(new_pwd, sizeof(new_pwd)) == NULL)
-	{
-		perror("getcwd");
-		*last_status = 1;
-		return (1);
-	}
-
-	setenv("OLDPWD", old_pwd, 1);
-	setenv("PWD", new_pwd, 1);
-
-	return (1);
+	return (0);
 }
