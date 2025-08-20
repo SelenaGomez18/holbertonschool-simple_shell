@@ -68,7 +68,7 @@ int handle_line(char *line, char *prog_name, unsigned int *line_number)
 }
 
 /**
- * main - entry point for the shell
+ * main - entry point for Shell
  * @argc: number of arguments
  * @argv: argument vector
  *
@@ -88,7 +88,7 @@ int main(int argc, char **argv)
 
 	while (1)
 	{
-		prompt("($) ");
+		prompt("S&A($) ");
 		nread = getline(&line, &len, stdin);
 		if (nread == -1)
 		{
