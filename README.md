@@ -1,11 +1,11 @@
-# 🐚 Simple Shell - hsh
+# Simple Shell - hsh
 
 A simple **Unix shell clone** written in C.  
 This project implements a basic command-line interpreter capable of executing programs, handling paths, and supporting a few built-in commands.
 
 ---
 
-## ✨ Features
+## Features
 
 - Interactive prompt `($)`  
 - Executes commands with absolute and relative paths  
@@ -17,7 +17,7 @@ This project implements a basic command-line interpreter capable of executing pr
 
 ---
 
-## 🚀 Usage
+## Usage
 
 ### 🔹 Interactive mode
 Run the shell and type commands:
@@ -45,7 +45,7 @@ It also works with pipes and redirections:
 echo "echo Hello World" | ./hsh
 ```
 
-## 📂 Project Structure
+## Project Structure
 ```
 .
 ├── shell.h
@@ -59,7 +59,7 @@ echo "echo Hello World" | ./hsh
 └── README.md
 ```
 
-## 📊 Conceptual Map of the Shell
+## Conceptual Map of the Shell
 
 ```
 ┌──────────────┐
@@ -118,7 +118,7 @@ echo "echo Hello World" | ./hsh
 └──────────────────────┘
 
 ```
-## 🔎 Flowchart – How it works
+## Flowchart – How it works
 
 ```mermaid
 
@@ -136,7 +136,7 @@ flowchart TD
     H --> B
 ```
 
-## 📖 Examples
+## Examples
 
 ```sh
 ($) /bin/ls
@@ -163,7 +163,7 @@ HOME=/home/user
 ($) exit
 ```
 
-## 🛠️ Installation
+## Installation
 
 Clone the repository and compile:
 
@@ -178,14 +178,14 @@ gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
 
 ./hsh
 
-## 📑 Documentation
+## Documentation
 
 This project includes a manual page.
 To view it in your terminal after compiling:
 
 man ./man_1_hsh
 
-## 👩‍💻 Authors
+## Authors
 
 Selena Gomez
 
