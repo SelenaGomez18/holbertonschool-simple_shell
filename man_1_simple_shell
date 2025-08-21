@@ -1,0 +1,59 @@
+.TH HSH 1 "August 2025" "hsh 1.0" "User Commands"
+.SH NAME
+hsh \- HSH - SIMPLE SHELL
+.SH SYNOPSIS
+.B hsh
+.RI [ script ]
+.SH DESCRIPTION
+\fBhsh\fP is a simple UNIX-like command line interpreter. It can run in
+interactive mode with a prompt, or in non-interactive mode when a script
+or input is provided through standard input.
+
+Commands can be either built-in or external programs found in the PATH
+environment variable. Exit statuses follow standard UNIX conventions.
+
+.SH BUILTINS
+The following built-in commands are implemented:
+
+.TP
+.B exit
+Terminate the shell, returning the last command exit status.
+
+.TP
+.B env
+Display the current environment, one variable per line.
+
+.TP
+Additional builtins may be implemented.
+
+.SH EXIT STATUS
+The exit status of \fBhsh\fP is the exit status of the last executed command.
+If a command cannot be found, the shell returns 127.
+If a command terminates due to a signal, the exit status is 128 plus the signal number.
+
+.SH EXAMPLES
+Run interactively:
+.EX
+$ hsh
+($) ls -l
+($) env
+($) exit
+.EE
+
+Run a script:
+.EX
+$ echo "ls -l" > script.sh
+$ ./hsh script.sh
+.EE
+
+Error when command not found:
+.EX
+($) foobar
+hsh: 1: foobar: not found
+.EE
+
+.SH SEE ALSO
+sh(1), bash(1), execve(2), fork(2), waitpid(2)
+
+.SH AUTHOR
+Selena Gómez and Alexander Zuleta
