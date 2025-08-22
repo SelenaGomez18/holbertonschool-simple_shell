@@ -135,9 +135,9 @@ flowchart TD
     F --> B
     H --> B
 
-    classDef shellStyle fill:#222,color:#00ff00,stroke:#00ff00;
+    classDef allnodes fill:#E8F5E9, stroke:#2E7D32,color:#1B5E20
 
-    class A,B,C,D,E,F shellStyle;
+    class A,B,C,D,E,F allnodes;
 ```
 
 ## Examples
