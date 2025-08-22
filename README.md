@@ -135,9 +135,16 @@ flowchart TD
     F --> B
     H --> B
 
-    classDef allnodes fill:#E8F5E9, stroke:#2E7D32,color:#1B5E20
+    classDef allnodes fill:#FFFFFF, stroke:#1B5E20,color:#1B5E20;
 
-    class A,B,C,D,E,F allnodes;
+    class A allnodes;
+    class B allnodes;
+    class C allnodes;
+    class D allnodes;
+    class E allnodes;
+    class F allnodes;
+    class G allnodes;
+    class H allnodes;
 ```
 
 ## Examples
