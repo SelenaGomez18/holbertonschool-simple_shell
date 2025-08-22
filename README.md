@@ -153,10 +153,6 @@ file1  file2  file3
 ```
 
 ```sh
-($) pwd
-/home/user/projects/simple_shell
-```
-```sh
 ($) env
 PATH=/usr/local/bin:/usr/bin:/bin
 HOME=/home/user
