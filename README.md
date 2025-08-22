@@ -135,12 +135,9 @@ flowchart TD
     F --> B
     H --> B
 
-    style A fill:#222,color:#00ff00
-    style B fill:#222,color:#00ff00
-    style C fill:#222,color:#00ff00
-    style D fill:#222,color:#00ff00
-    style E fill:#222,color:#00ff00
-    style F fill:#222,color:#00ff00
+    classDef shellStyle fill:#222,color:#00ff00,stroke:#00ff00;
+
+    class A,B,C,D,E,F shellStyle;
 ```
 
 ## Examples
